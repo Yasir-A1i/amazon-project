@@ -2,7 +2,8 @@ import {
   cart,
   removeFromCart,
   calculateCartQuantity,
-  updateQuantity
+  updateQuantity,
+  updateDeliveryOption
 } from '../data/cart.js';
 import { products } from '../data/products.js';
 import { formatCurrency } from "./utils/money.js";
@@ -30,10 +31,11 @@ cart.forEach((cartItem) => {
   let deliveryOption;
   deliveryOptions.forEach((option)=>{
     if(option.id === deliveryOptionId){
-      deliveryOption = option
+      deliveryOption = option;
     }
   });
   const today = dayjs();
+  console.log(deliveryOption)
     const deliveryDate = today.add(
       deliveryOption.deliveryDays,
       'days'
@@ -100,7 +102,7 @@ function deliveryOptionsHTML(matchingProduct, cartItem) {
     );
     const dateString = deliveryDate.format('dddd, MMMM D');
     // return dateString;
-    console.log(dateString);
+
     const priceString = deliveryOption.priceCents === 0
       ? 'FREE'
       : `$${formatCurrency(deliveryOption.priceCents)} -`
@@ -114,7 +116,9 @@ function deliveryOptionsHTML(matchingProduct, cartItem) {
 
     html +=
       `
-    <div class="delivery-option">
+    <div class="delivery-option js-delivery-option"
+    data-product-id = "${matchingProduct.id}"
+    data-delivery-option-id = "${deliveryOption.id}">
                   <input type="radio"
                    ${isChecked ? 'checked' : ''}
                     class="delivery-option-input"
@@ -193,3 +197,11 @@ document.querySelectorAll('.js-update-link')
 
     });
   });
+
+
+  document.querySelectorAll('.js-delivery-option').forEach((element)=>{
+      element.addEventListener('click', ()=>{
+        const { productId, deliveryOptionId } = element.dataset;
+        updateDeliveryOption(productId, deliveryOptionId);
+      });
+  })
