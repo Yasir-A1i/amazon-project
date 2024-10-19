@@ -13,7 +13,7 @@ import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 import { deliveryOptions } from '../data/delieveryOptions.js'
 
 
-
+function renderOrderSummary(){
 let cartSummaryHTML = '';
 cart.forEach((cartItem) => {
   const productId = cartItem.productId;
@@ -203,5 +203,8 @@ document.querySelectorAll('.js-update-link')
       element.addEventListener('click', ()=>{
         const { productId, deliveryOptionId } = element.dataset;
         updateDeliveryOption(productId, deliveryOptionId);
+        renderOrderSummary();
       });
   })
+}
+renderOrderSummary();
