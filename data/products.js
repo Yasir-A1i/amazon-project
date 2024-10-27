@@ -11,6 +11,31 @@ export function getProduct(productId){
   return matchingProduct;  
 }
 
+class Product{
+  id;
+  image;
+  name;
+  rating;
+  priceCents;
+
+  constructor(productDetails){
+    this.id= productDetails.id;
+    this.image= productDetails.image;
+    this.name = productDetails.name;
+    this.rating = productDetails.rating;
+    this.priceCents = productDetails.priceCents;
+  }
+
+  getStarsUrl(){
+    return `images/ratings/rating-${this.rating.stars * 10}.png`
+  }
+  getsPrice(){
+    return `$${(this.priceCents / 100).toFixed(2)}`
+  }
+}
+
+
+
 export const products = [
 
   {
@@ -671,4 +696,7 @@ export const products = [
       "mens"
     ]
   }
-];
+].map((productDetails)=>{
+  return new Product(productDetails)
+});
+
